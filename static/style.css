@@ -1,0 +1,25 @@
+*{
+	font-weight: 300;
+	font-family: sans-serif;
+	outline: 1px dotted pink;
+}
+#container{
+	width: 970px;
+	min-height:500px;
+	border: 1px solid black;
+}
+#messages{
+	width: 100%;
+	height: 200px;
+	background-color: rgb(220, 220, 220);
+	overflow: scroll;
+}
+div.left, div.right{
+	vertical-align: top;
+	display: inline-block;
+	min-height: 250px;
+	width: 49%;
+}
+input{
+	width:70%;
+}

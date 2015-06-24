@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel= "stylesheet" href="stylesheets/style.css">
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type ="text/javascript">
+        $(document).ready(function (){
+
+            var socket = io.connect();
+            var client_users_list = [];
+            var alias = prompt("Please enter your chat name");
+            console.log(alias);
+
+            socket.emit('add_user', {alias:alias} );
+
+            socket.on('update_users_list', function(data){
+
+                $('div.users').html("");
+                for(index in data.users)
+                    $('div.users').append("<h3>" + data.users[index].alias + "</h3>");
+            })
+
+            $('button').click(function(){
+                if($('input').val()){
+                    socket.emit('new_message', {alias:alias, msg: $('input').val()})
+                }
+                $('input').val('');
+                console.log('click');
+            })
+            socket.on('update_msg_box', function(data){
+                console.log(data.messages);
+                $('#messages').html("");
+                for(index in data.messages)
+                    $('#messages').append
+                (""+ "<p> <label>"+ data.messages[index].alias + "</label>: " + data.messages[index].msg + "</p>");
+                $('#messages').scrollTop($("#messages")[0].scrollHeight);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id = 'container'>
+        <div class = 'left'>
+            <div id = 'messages'>
+            </div>
+            <input type= 'text' class= 'messageBox'>
+            <button>Send Message</button>
+        </div>
+        <div class= 'right'>
+            <div class='users'>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
